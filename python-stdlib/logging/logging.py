@@ -34,7 +34,7 @@ class LogRecord:
         self.levelname = _level_dict[level]
         self.message = message
         self.ct = time.time()
-        self.msecs = int((self.ct - int(self.ct)) * 1000)
+        self.msecs = 0
         self.asctime = None
 
 
@@ -96,6 +96,8 @@ class Formatter:
     def format(self, record):
         if self.usesTime():
             record.asctime = self.formatTime(self.datefmt, record)
+        if 'msecs' in self.fmt:
+            record.msecs = int((record.ct - int(record.ct)) * 1000)
         return self.fmt % {
             "name": record.name,
             "message": record.message,
